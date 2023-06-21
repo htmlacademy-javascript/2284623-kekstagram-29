@@ -1,4 +1,10 @@
-const messages = [
+const SIMILAR_DESCRIPTION_COUNT = 25;
+const LIKE_MIN = 15;
+const LIKE_MAX = 200;
+const COMMENTS_MAX = 30;
+const AVATAR_ID_MAX = 6;
+
+const MESSAGES = [
   'Всё отлично!',
   'В целом всё неплохо. Но не всё.',
   'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
@@ -7,7 +13,7 @@ const messages = [
   'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'
 ];
 
-const names = [
+const NAMES = [
   'Иван',
   'Артем',
   'Андрей',
@@ -15,7 +21,7 @@ const names = [
   'Василий'
 ];
 
-const descriptions = [
+const DESCRIPTIONS = [
   'Центр города',
   'Окраина',
   'Парк',
@@ -24,9 +30,7 @@ const descriptions = [
   'Площадка'
 ];
 
-const SIMILAR_DESCRIPTION_COUNT = 25;
-
-const getRandomPositiveInteger = function (a, b) {
+const getRandomPositiveInteger = (a, b) => {
   const lower = Math.ceil(Math.min(Math.abs(a), Math.abs(b)));
   const upper = Math.floor(Math.max(Math.abs(a), Math.abs(b)));
   const result = Math.random() * (upper - lower + 1) + lower;
@@ -35,15 +39,24 @@ const getRandomPositiveInteger = function (a, b) {
 
 const getRandomArrayElement = (elements) => elements[getRandomPositiveInteger(0, elements.length - 1)];
 
+const getRandomTextComment = (elements) => {
+  const textCount = getRandomPositiveInteger(0, 1);
+  if (!textCount) {
+    return elements[getRandomPositiveInteger(0, elements.length - 1)];
+  }
+  const commentText = `${elements[getRandomPositiveInteger(0, elements.length - 1)]} ${elements[getRandomPositiveInteger(0, elements.length - 1)]}`;
+  return commentText;
+};
+
 const createRandomIdGenerator = (min, max) => {
   const previousValues = [];
+
   return function () {
     let currentValue = getRandomPositiveInteger(min, max);
     if (previousValues.length >= (max - min + 1)) {
-      // console.error('Достигнут максимум');
+      // console.log(previousValues.length);
       return null;
     }
-    previousValues.includes(currentValue);
     while (previousValues.includes(currentValue)) {
       currentValue = getRandomPositiveInteger(min, max);
     }
@@ -52,26 +65,24 @@ const createRandomIdGenerator = (min, max) => {
   };
 };
 
+const generateFotoId = createRandomIdGenerator(1,SIMILAR_DESCRIPTION_COUNT);
+const generateUrlId = createRandomIdGenerator(1,SIMILAR_DESCRIPTION_COUNT);
 const generateCommentId = createRandomIdGenerator(1,1000);
-const generateFotoId = createRandomIdGenerator(1,25);
-const generateUrlId = createRandomIdGenerator(1,25);
 
-const createComment = function () {
-  return {
-    id: generateCommentId(),
-    avatar: `img/avatar-${getRandomPositiveInteger(1, 6)}.svg`,
-    message: getRandomArrayElement(messages),
-    name: getRandomArrayElement(names)
-  };
-};
+const createComment = () => ({
+  id: generateCommentId(),
+  avatar: `img/avatar-${getRandomPositiveInteger(1, AVATAR_ID_MAX)}.svg`,
+  message: getRandomTextComment(MESSAGES),
+  name: getRandomArrayElement(NAMES)
+});
 
-const createComments = () => Array.from({length: getRandomPositiveInteger(0, 30)}, createComment);
+const createComments = () => Array.from({length: getRandomPositiveInteger(0, COMMENTS_MAX)}, createComment);
 
 const createDescriptionFoto = () => ({
   id: generateFotoId(),
   url: `photos/${generateUrlId()}.jpg`,
-  description: getRandomArrayElement(descriptions),
-  likes: getRandomPositiveInteger(15, 200),
+  description: getRandomArrayElement(DESCRIPTIONS),
+  likes: getRandomPositiveInteger(LIKE_MIN, LIKE_MAX),
   comments: createComments()
 });
 const createDescriptionFotos = () => Array.from({length: SIMILAR_DESCRIPTION_COUNT}, createDescriptionFoto);
