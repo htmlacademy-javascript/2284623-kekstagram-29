@@ -1,9 +1,4 @@
-const checkStringLength = (string, maxLength) => {
-  if (string.length <= maxLength) {
-    return true;
-  }
-  return false;
-};
+const checkStringLength = (string, maxLength) => string.length <= maxLength;
 
 checkStringLength('аваыу', 6);
 
