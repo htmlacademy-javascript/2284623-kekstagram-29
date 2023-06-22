@@ -1,2 +1,2 @@
-import {createDescriptionFotos} from './create-elements.js';
+import {createDescriptionFotos} from './create-element.js';
 createDescriptionFotos();
