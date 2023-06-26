@@ -1,0 +1,20 @@
+import {createDescriptionFotos} from './create-element.js';
+const sectionOtherUsers = document.querySelector('.pictures');
+sectionOtherUsers.querySelector('.pictures__title').classList.remove('visually-hidden');
+
+const similarFotoTemplate = document.querySelector('#picture').content.querySelector('.picture');
+
+const similarFotos = createDescriptionFotos();
+const similarFotoFragment = document.createDocumentFragment();
+
+similarFotos.forEach(({url, comments, likes, description}) => {
+  const fotoElement = similarFotoTemplate.cloneNode(true);
+  fotoElement.querySelector('.picture__img').src = url;
+  fotoElement.querySelector('.picture__comments').textContent = comments.length;
+  fotoElement.querySelector('.picture__likes').textContent = likes;
+  fotoElement.querySelector('.picture__img').alt = description;
+  similarFotoFragment.appendChild(fotoElement);
+});
+
+sectionOtherUsers.appendChild(similarFotoFragment);
+
