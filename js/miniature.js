@@ -13,8 +13,8 @@ similarFotos.forEach(({url, comments, likes, description}) => {
   fotoElement.querySelector('.picture__comments').textContent = comments.length;
   fotoElement.querySelector('.picture__likes').textContent = likes;
   fotoElement.querySelector('.picture__img').alt = description;
+  fotoElement.comments = comments;
   similarFotoFragment.appendChild(fotoElement);
 });
 
 sectionOtherUsers.appendChild(similarFotoFragment);
-
