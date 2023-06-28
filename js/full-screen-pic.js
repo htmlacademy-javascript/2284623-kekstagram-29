@@ -63,7 +63,7 @@ function closeUserModal () {
   otherPicContainer.addEventListener('click', onPicClick);
 }
 
-//Функция по отрисовке полноразмерного окна + цикл для добавления комментариев
+//Функция по отрисовке полноразмерного окна
 function onPicClick (evt) {
   if (evt.target.closest('.picture')) {
     const clickPicture = evt.target.closest('.picture');
@@ -88,9 +88,9 @@ function onFiveComments () {
     commentElement.querySelector('.social__picture').alt = comment.name;
     commentElement.querySelector('.social__text').textContent = comment.message;
     commentsList.appendChild(commentElement);
-    hideCommentLoader();
-    updateCommentCount();
   });
+  hideCommentLoader();
+  updateCommentCount();
 }
 
 //Обновление строки с количеством комментариев + исправление поведения при изначальном 0 комментариев
