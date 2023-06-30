@@ -21,8 +21,6 @@ const commentsLoader = fullPictureContainer.querySelector('.comments-loader');
 const commentsList = fullPictureContainer.querySelector('.social__comments');
 //Контейнер одного комментария
 const commentTemplate = commentsList.querySelector('.social__comment');
-//Создаю живую коллекцию с комментариями
-const commentsChildren = commentsList.children;
 //В переменной хранится массив ещё неотрисованных комментариев выбранной полноразмерной фотографии
 let partCommentsArray;
 
@@ -96,10 +94,10 @@ function onFiveComments () {
 //Обновление строки с количеством комментариев + исправление поведения при изначальном 0 комментариев
 function updateCommentCount () {
   if (+commentsCount.textContent > 0) {
-    commentCount.innerHTML = `${commentsChildren.length} из ${commentsCount.textContent} комментариев`;
-  } else {
-    commentCount.innerHTML = '0 из 0 комментариев';
+    commentCount.innerHTML = `${commentsList.querySelectorAll('.social__comment').length} из ${commentsCount.textContent} комментариев`;
   }
+  commentCount.innerHTML = '0 из 0 комментариев';
+
 }
 
 //Убираю/добавляю кнопку загрузить ещё, если комментарии кончились
