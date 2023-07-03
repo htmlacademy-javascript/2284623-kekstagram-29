@@ -1,4 +1,4 @@
-import './miniature.js';
+import {similarFotos} from './miniature.js';
 //Контейнер с чужими изображениями
 const otherPicContainer = document.querySelector('.pictures');
 //Контейнер полноэкранного показа изображения
@@ -21,8 +21,6 @@ const commentsLoader = fullPictureContainer.querySelector('.comments-loader');
 const commentsList = fullPictureContainer.querySelector('.social__comments');
 //Контейнер одного комментария
 const commentTemplate = commentsList.querySelector('.social__comment');
-//Создаю живую коллекцию с комментариями
-const commentsChildren = commentsList.children;
 //В переменной хранится массив ещё неотрисованных комментариев выбранной полноразмерной фотографии
 let partCommentsArray;
 
@@ -63,7 +61,7 @@ function closeUserModal () {
   otherPicContainer.addEventListener('click', onPicClick);
 }
 
-//Функция по отрисовке полноразмерного окна + цикл для добавления комментариев
+//Функция по отрисовке полноразмерного окна
 function onPicClick (evt) {
   if (evt.target.closest('.picture')) {
     const clickPicture = evt.target.closest('.picture');
@@ -73,7 +71,7 @@ function onPicClick (evt) {
     commentsCount.textContent = clickPicture.querySelector('.picture__comments').textContent;
     fotoDescription.textContent = clickPicture.querySelector('.picture__img').alt;
     commentsList.innerHTML = '';
-    partCommentsArray = clickPicture.comments.slice(0);
+    partCommentsArray = similarFotos.find((element) => element.id === +clickPicture.dataset.id).comments.slice(0);
     onFiveComments(partCommentsArray);
     openUserModal();
   }
@@ -88,15 +86,15 @@ function onFiveComments () {
     commentElement.querySelector('.social__picture').alt = comment.name;
     commentElement.querySelector('.social__text').textContent = comment.message;
     commentsList.appendChild(commentElement);
-    hideCommentLoader();
-    updateCommentCount();
   });
+  hideCommentLoader();
+  updateCommentCount();
 }
 
 //Обновление строки с количеством комментариев + исправление поведения при изначальном 0 комментариев
 function updateCommentCount () {
   if (+commentsCount.textContent > 0) {
-    commentCount.innerHTML = `${commentsChildren.length} из ${commentsCount.textContent} комментариев`;
+    commentCount.innerHTML = `${commentsList.querySelectorAll('.social__comment').length} из ${commentsCount.textContent} комментариев`;
   } else {
     commentCount.innerHTML = '0 из 0 комментариев';
   }
