@@ -1,4 +1,4 @@
-import './miniature.js';
+import {similarFotos} from './miniature.js';
 //Контейнер с чужими изображениями
 const otherPicContainer = document.querySelector('.pictures');
 //Контейнер полноэкранного показа изображения
@@ -71,7 +71,7 @@ function onPicClick (evt) {
     commentsCount.textContent = clickPicture.querySelector('.picture__comments').textContent;
     fotoDescription.textContent = clickPicture.querySelector('.picture__img').alt;
     commentsList.innerHTML = '';
-    partCommentsArray = clickPicture.comments.slice(0);
+    partCommentsArray = similarFotos.find((element) => element.id === +clickPicture.dataset.id).comments.slice(0);
     onFiveComments(partCommentsArray);
     openUserModal();
   }
@@ -95,9 +95,9 @@ function onFiveComments () {
 function updateCommentCount () {
   if (+commentsCount.textContent > 0) {
     commentCount.innerHTML = `${commentsList.querySelectorAll('.social__comment').length} из ${commentsCount.textContent} комментариев`;
+  } else {
+    commentCount.innerHTML = '0 из 0 комментариев';
   }
-  commentCount.innerHTML = '0 из 0 комментариев';
-
 }
 
 //Убираю/добавляю кнопку загрузить ещё, если комментарии кончились

@@ -7,14 +7,17 @@ const similarFotoTemplate = document.querySelector('#picture').content.querySele
 const similarFotos = createDescriptionFotos();
 const similarFotoFragment = document.createDocumentFragment();
 
-similarFotos.forEach(({url, comments, likes, description}) => {
+similarFotos.forEach(({url, comments, id, likes, description}) => {
   const fotoElement = similarFotoTemplate.cloneNode(true);
   fotoElement.querySelector('.picture__img').src = url;
   fotoElement.querySelector('.picture__comments').textContent = comments.length;
   fotoElement.querySelector('.picture__likes').textContent = likes;
   fotoElement.querySelector('.picture__img').alt = description;
-  fotoElement.comments = comments;
+  fotoElement.dataset.id = id;
   similarFotoFragment.appendChild(fotoElement);
 });
 
 sectionOtherUsers.appendChild(similarFotoFragment);
+
+export {similarFotos};
+
